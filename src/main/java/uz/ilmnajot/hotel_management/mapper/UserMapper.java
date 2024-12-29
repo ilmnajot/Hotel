@@ -13,4 +13,5 @@ public interface UserMapper {
     UserShift toUserShift(UserShiftRequestDTO userShiftRequestDTO);
     UserDetails toUserDetails(UserDetailsRequestDTO userDetailsRequestDTO);
     UserResponseDTO toUserResponseDTO(User user);
+    User toUpdateUser(User user, UserRequestDTO userRequestDTO);
 }

@@ -1,10 +1,6 @@
 package uz.ilmnajot.hotel_management.dto.request;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import uz.ilmnajot.hotel_management.enums.RoomType;
 import uz.ilmnajot.hotel_management.enums.Status;
 

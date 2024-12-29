@@ -1,5 +1,6 @@
 package uz.ilmnajot.hotel_management.mapper;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import uz.ilmnajot.hotel_management.dto.request.UserRequestDTO;
 import uz.ilmnajot.hotel_management.dto.request.UserDetailsRequestDTO;
@@ -10,10 +11,10 @@ import uz.ilmnajot.hotel_management.dto.response.UserShiftResponseDTO;
 import uz.ilmnajot.hotel_management.entity.User;
 import uz.ilmnajot.hotel_management.entity.UserDetails;
 import uz.ilmnajot.hotel_management.entity.UserShift;
+import uz.ilmnajot.hotel_management.exception.AlreadyExistsException;
 import uz.ilmnajot.hotel_management.service.RoleService;
 import uz.ilmnajot.hotel_management.service.UserDetailsService;
 import uz.ilmnajot.hotel_management.service.UserService;
-
 @Component
 public class UserMapperImpl implements UserMapper {
 
@@ -21,14 +22,17 @@ public class UserMapperImpl implements UserMapper {
     private final UserService userService;
     private final RoleService roleService;
 
-
     public UserMapperImpl(UserDetailsService userDetailsService, UserService userService, RoleService roleService) {
         this.userDetailsService = userDetailsService;
         this.userService = userService;
         this.roleService = roleService;
     }
 
+
     public UserDetails toUserDetails(UserDetailsRequestDTO userDetailsRequestDTO) {
+        if (userDetailsRequestDTO==null){
+            throw new AlreadyExistsException("User details must not be null");
+        }
         UserDetails details = new UserDetails();
         User user = this.userService.getUserById(userDetailsRequestDTO.getUserId());
         details.setUser(user);
@@ -101,5 +105,41 @@ public class UserMapperImpl implements UserMapper {
         responseDTO.setUserShiftId(user.getUserShift().getId());
         responseDTO.setRoleId(user.getRole().getId());
         return responseDTO;
+    }
+
+    @Override
+    public User toUpdateUser(User user, UserRequestDTO userRequestDTO) {
+        if (userRequestDTO.getFName()!=null){
+            user.setFName(userRequestDTO.getFName());
+        }
+        if (userRequestDTO.getLName()!=null){
+            user.setLName(userRequestDTO.getLName());
+        }
+        if (userRequestDTO.getEmail()!=null){
+            user.setEmail(userRequestDTO.getEmail());
+        }
+        if (userRequestDTO.getPhone()!=null){
+            user.setPhone(userRequestDTO.getPhone());
+        }
+        if (userRequestDTO.getUserDetailsRequestDTO()!=null){
+            UserDetails userDetails = user.getUserDetails();
+            if (userDetails==null){
+                userDetails = new UserDetails();
+            }
+           userDetails =  toUserDetails(userRequestDTO.getUserDetailsRequestDTO());
+            user.setUserDetails(userDetails);
+        }
+        if (userRequestDTO.getUserShiftRequestDTO()!=null){
+            UserShift userShift = user.getUserShift();
+            if (userShift==null){
+                userShift = new UserShift();
+            }
+            userShift = toUserShift(userRequestDTO.getUserShiftRequestDTO());
+            user.setUserShift(userShift);
+        }
+        if (userRequestDTO.getRoleId()!=null){
+            user.setRole(this.roleService.getRoleById(userRequestDTO.getRoleId()));
+        }
+        return user;
     }
 }

@@ -32,4 +32,27 @@ public class RoomMapperImpl implements RoomMapper {
         responseDTO.setFeatures(room.getFeatures());
         return responseDTO;
     }
+
+    @Override
+    public Room toUpdateRoomEntity(RoomRequestDTO roomRequestDTO, Room room) {
+        if (roomRequestDTO.getRoomNumber()!=0){
+            room.setRoomNumber(roomRequestDTO.getRoomNumber());
+        }
+        if (roomRequestDTO.getFloor()!=0){
+            room.setFloor(roomRequestDTO.getFloor());
+        }
+        if (roomRequestDTO.getRoomType()!=null){
+            room.setRoomType(roomRequestDTO.getRoomType());
+        }
+        if (roomRequestDTO.getPrice()!=null){
+            room.setPrice(roomRequestDTO.getPrice());
+        }
+        if (roomRequestDTO.getStatus()!=null){
+            room.setStatus(roomRequestDTO.getStatus());
+        }
+        if (roomRequestDTO.getFeatures()!=null){
+            room.setFeatures(roomRequestDTO.getFeatures());
+        }
+        return room;
+    }
 }

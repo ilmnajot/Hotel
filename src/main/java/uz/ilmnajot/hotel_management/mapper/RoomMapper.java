@@ -7,4 +7,5 @@ import uz.ilmnajot.hotel_management.entity.Room;
 public interface RoomMapper {
     Room toRoomEntity(RoomRequestDTO roomRequestDTO);
     RoomResponseDTO toRoomResponseDTO(Room room);
+    Room toUpdateRoomEntity(RoomRequestDTO roomRequestDTO, Room room);
 }

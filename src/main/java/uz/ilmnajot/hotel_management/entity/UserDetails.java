@@ -16,7 +16,7 @@ import java.time.LocalDate;
 public class UserDetails extends AbsEntity {
 
     @OneToOne
-    @Column(unique = true, nullable = false)
+    @JoinColumn(unique = true, nullable = false)
     private User user;
 
     @Enumerated(EnumType.STRING)

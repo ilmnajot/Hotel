@@ -5,13 +5,12 @@ import jakarta.validation.constraints.Email;
 import lombok.*;
 import uz.ilmnajot.hotel_management.template.AbsEntity;
 
-import java.util.Set;
 
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
+@Entity(name = "users")
 @Builder
 public class User extends AbsEntity { //this class can serve as guest or other users any time.
 

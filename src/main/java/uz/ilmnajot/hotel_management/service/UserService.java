@@ -9,4 +9,12 @@ public interface UserService {
     User getUserById(Long userId);
 
     ApiResponse addEmployee(UserRequestDTO userRequestDTO);
+
+    ApiResponse getEmployee(Long employeeId);
+
+    ApiResponse getAllEmployees();
+
+    ApiResponse updateEmployee(Long employeeId, UserRequestDTO userRequestDTO);
+
+    ApiResponse deleteEmployee(Long employeeId);
 }
