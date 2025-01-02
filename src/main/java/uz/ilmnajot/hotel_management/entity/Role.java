@@ -20,8 +20,5 @@ public class Role extends AbsEntity {
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
 
-    @OneToMany(mappedBy = "role")
-    private List<User> users;
-
 
 }

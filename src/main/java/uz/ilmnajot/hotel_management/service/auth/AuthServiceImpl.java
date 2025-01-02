@@ -43,7 +43,7 @@ public class AuthServiceImpl implements AuthService {
                 authRequestDTO.getEmail(),
                 authRequestDTO.getPassword()
         ));
-        User user = (User) authentication;
+        User user = (User) authentication.getPrincipal();
         User existsUser = userRepository.findByEmail(user.getEmail()).orElseThrow(
                 () -> new ResourceNotFoundException(ErrorMessage.USER_NOT_FOUND));
         AuthTokenResponse response = new AuthTokenResponse();

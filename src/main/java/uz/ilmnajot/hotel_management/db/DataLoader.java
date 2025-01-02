@@ -2,6 +2,7 @@ package uz.ilmnajot.hotel_management.db;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import uz.ilmnajot.hotel_management.entity.Role;
 import uz.ilmnajot.hotel_management.entity.User;
@@ -17,6 +18,7 @@ public class DataLoader implements CommandLineRunner {
 
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
     @Value("${spring.sql.init.mode}")
     private String initMode;
     private static final String ALWAYS = "always";
@@ -24,9 +26,10 @@ public class DataLoader implements CommandLineRunner {
     private static final String MANAGER = "MANAGER";
     private static final String USER = "USER";
 
-    public DataLoader(RoleRepository roleRepository, UserRepository userRepository) {
+    public DataLoader(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -59,8 +62,10 @@ public class DataLoader implements CommandLineRunner {
                     .fName("owner")
                     .lName("owner")
                     .email("owner@gmail.com")
+                    .password(passwordEncoder.encode("owner"))
                     .phone("+998994107354")
                     .role(ownerRole)
+                    .enabled(true)
                     .build();
             userRepository.save(owner);
 
@@ -69,8 +74,10 @@ public class DataLoader implements CommandLineRunner {
                     .fName("admin")
                     .lName("admin")
                     .email("admin@gmail.com")
+                    .password(passwordEncoder.encode("admin"))
                     .phone("+998994107354")
                     .role(adminRole)
+                    .enabled(true)
                     .build();
             userRepository.save(admin);
 
@@ -79,8 +86,10 @@ public class DataLoader implements CommandLineRunner {
                     .fName("user")
                     .lName("user")
                     .email("user@gmail.com")
+                    .password(passwordEncoder.encode("user"))
                     .phone("+998994107354")
                     .role(userRole)
+                    .enabled(true)
                     .build();
             userRepository.save(user);
 

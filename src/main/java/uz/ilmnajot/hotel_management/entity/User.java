@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import uz.ilmnajot.hotel_management.template.AbsEntity;
 
@@ -34,7 +35,6 @@ public class User extends AbsEntity  implements UserDetails { //this class can s
     private UserShift userShift;
 
     @ManyToOne
-    @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
     private boolean accountNonExpired = true;
@@ -45,7 +45,7 @@ public class User extends AbsEntity  implements UserDetails { //this class can s
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of(new SimpleGrantedAuthority(role.getName()));
     }
 
     @Override
