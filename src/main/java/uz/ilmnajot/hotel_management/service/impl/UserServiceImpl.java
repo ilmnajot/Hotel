@@ -1,6 +1,5 @@
-package uz.ilmnajot.hotel_management.service;
+package uz.ilmnajot.hotel_management.service.impl;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -11,6 +10,7 @@ import uz.ilmnajot.hotel_management.entity.User;
 import uz.ilmnajot.hotel_management.exception.ResourceNotFoundException;
 import uz.ilmnajot.hotel_management.mapper.UserMapper;
 import uz.ilmnajot.hotel_management.repository.UserRepository;
+import uz.ilmnajot.hotel_management.service.UserService;
 import uz.ilmnajot.hotel_management.utils.ErrorMessage;
 import uz.ilmnajot.hotel_management.utils.SuccessMessage;
 
@@ -72,6 +72,12 @@ public class UserServiceImpl implements UserService {
 
     public User getUserById(Long userId) {
         return userRepository.findByIdAndDeletedFalse(userId).orElseThrow(
+                () -> new ResolutionException(ErrorMessage.USER_NOT_FOUND));
+    }
+
+    @Override
+    public User getUserByEmail(String username) {
+        return userRepository.findByEmail(username).orElseThrow(
                 () -> new ResolutionException(ErrorMessage.USER_NOT_FOUND));
     }
 }

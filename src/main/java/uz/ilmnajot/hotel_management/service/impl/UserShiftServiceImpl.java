@@ -1,4 +1,4 @@
-package uz.ilmnajot.hotel_management.service;
+package uz.ilmnajot.hotel_management.service.impl;
 
 import org.springframework.stereotype.Service;
 import uz.ilmnajot.hotel_management.entity.User;
@@ -6,6 +6,7 @@ import uz.ilmnajot.hotel_management.entity.UserShift;
 import uz.ilmnajot.hotel_management.exception.ResourceNotFoundException;
 import uz.ilmnajot.hotel_management.repository.UserRepository;
 import uz.ilmnajot.hotel_management.repository.UserShiftRepository;
+import uz.ilmnajot.hotel_management.service.UserShiftService;
 import uz.ilmnajot.hotel_management.utils.ErrorMessage;
 
 @Service

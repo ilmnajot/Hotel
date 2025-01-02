@@ -1,39 +1,35 @@
 package uz.ilmnajot.hotel_management.mapper;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import uz.ilmnajot.hotel_management.dto.request.UserRequestDTO;
 import uz.ilmnajot.hotel_management.dto.request.UserDetailsRequestDTO;
+import uz.ilmnajot.hotel_management.dto.request.UserRequestDTO;
 import uz.ilmnajot.hotel_management.dto.request.UserShiftRequestDTO;
 import uz.ilmnajot.hotel_management.dto.response.UserDetailsResponseDTO;
 import uz.ilmnajot.hotel_management.dto.response.UserResponseDTO;
 import uz.ilmnajot.hotel_management.dto.response.UserShiftResponseDTO;
 import uz.ilmnajot.hotel_management.entity.User;
-import uz.ilmnajot.hotel_management.entity.UserDetails;
+import uz.ilmnajot.hotel_management.entity.UserDetail;
 import uz.ilmnajot.hotel_management.entity.UserShift;
 import uz.ilmnajot.hotel_management.exception.AlreadyExistsException;
 import uz.ilmnajot.hotel_management.service.RoleService;
-import uz.ilmnajot.hotel_management.service.UserDetailsService;
 import uz.ilmnajot.hotel_management.service.UserService;
+
 @Component
+@RequiredArgsConstructor
 public class UserMapperImpl implements UserMapper {
 
-    private final UserDetailsService userDetailsService;
     private final UserService userService;
     private final RoleService roleService;
-
-    public UserMapperImpl(UserDetailsService userDetailsService, UserService userService, RoleService roleService) {
-        this.userDetailsService = userDetailsService;
-        this.userService = userService;
-        this.roleService = roleService;
-    }
+    private final PasswordEncoder passwordEncoder;
 
 
-    public UserDetails toUserDetails(UserDetailsRequestDTO userDetailsRequestDTO) {
-        if (userDetailsRequestDTO==null){
+    public UserDetail toUserDetails(UserDetailsRequestDTO userDetailsRequestDTO) {
+        if (userDetailsRequestDTO == null) {
             throw new AlreadyExistsException("User details must not be null");
         }
-        UserDetails details = new UserDetails();
+        UserDetail details = new UserDetail();
         User user = this.userService.getUserById(userDetailsRequestDTO.getUserId());
         details.setUser(user);
         details.setDetailsStatus(userDetailsRequestDTO.getDetailsStatus());
@@ -43,14 +39,14 @@ public class UserMapperImpl implements UserMapper {
         return details;
     }
 
-    public UserDetailsResponseDTO toUserDetailsResponseDTO(UserDetails userDetails){
+    public UserDetailsResponseDTO toUserDetailsResponseDTO(UserDetail userDetail) {
         UserDetailsResponseDTO responseDTO = new UserDetailsResponseDTO();
-        responseDTO.setId(userDetails.getId());
-        responseDTO.setDetailsStatus(userDetails.getDetailsStatus());
-        responseDTO.setPassportNumber(userDetails.getPassportNumber());
-        responseDTO.setExpirationDate(userDetails.getExpirationDate());
-        responseDTO.setDetails(userDetails.getDetails());
-        responseDTO.setUserId(userDetails.getUser().getId());
+        responseDTO.setId(userDetail.getId());
+        responseDTO.setDetailsStatus(userDetail.getDetailsStatus());
+        responseDTO.setPassportNumber(userDetail.getPassportNumber());
+        responseDTO.setExpirationDate(userDetail.getExpirationDate());
+        responseDTO.setDetails(userDetail.getDetails());
+        responseDTO.setUserId(userDetail.getUser().getId());
         return responseDTO;
     }
 
@@ -67,7 +63,7 @@ public class UserMapperImpl implements UserMapper {
         return shift;
     }
 
-    public UserShiftResponseDTO toUserShiftResponseDTO(UserShift userShift){
+    public UserShiftResponseDTO toUserShiftResponseDTO(UserShift userShift) {
         UserShiftResponseDTO responseDTO = new UserShiftResponseDTO();
         responseDTO.setId(userShift.getId());
         responseDTO.setName(userShift.getName());
@@ -85,8 +81,9 @@ public class UserMapperImpl implements UserMapper {
         user.setFName(userRequestDTO.getFName());
         user.setLName(userRequestDTO.getLName());
         user.setEmail(userRequestDTO.getEmail());
+        user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
         user.setPhone(userRequestDTO.getPhone());
-        user.setUserDetails(toUserDetails(userRequestDTO.getUserDetailsRequestDTO()));
+        user.setUserDetail(toUserDetails(userRequestDTO.getUserDetailsRequestDTO()));
         user.setUserShift(toUserShift(userRequestDTO.getUserShiftRequestDTO()));
         user.setRole(this.roleService.getRoleById(userRequestDTO.getRoleId()));
         return user;
@@ -100,8 +97,9 @@ public class UserMapperImpl implements UserMapper {
         responseDTO.setFName(user.getFName());
         responseDTO.setLName(user.getLName());
         responseDTO.setEmail(user.getEmail());
+        responseDTO.setPassword(user.getPassword());
         responseDTO.setPhone(user.getPhone());
-        responseDTO.setUserDetailsId(user.getUserDetails().getId());
+        responseDTO.setUserDetailsId(user.getUserDetail().getId());
         responseDTO.setUserShiftId(user.getUserShift().getId());
         responseDTO.setRoleId(user.getRole().getId());
         return responseDTO;
@@ -109,35 +107,35 @@ public class UserMapperImpl implements UserMapper {
 
     @Override
     public User toUpdateUser(User user, UserRequestDTO userRequestDTO) {
-        if (userRequestDTO.getFName()!=null){
+        if (userRequestDTO.getFName() != null) {
             user.setFName(userRequestDTO.getFName());
         }
-        if (userRequestDTO.getLName()!=null){
+        if (userRequestDTO.getLName() != null) {
             user.setLName(userRequestDTO.getLName());
         }
-        if (userRequestDTO.getEmail()!=null){
+        if (userRequestDTO.getEmail() != null) {
             user.setEmail(userRequestDTO.getEmail());
         }
-        if (userRequestDTO.getPhone()!=null){
+        if (userRequestDTO.getPhone() != null) {
             user.setPhone(userRequestDTO.getPhone());
         }
-        if (userRequestDTO.getUserDetailsRequestDTO()!=null){
-            UserDetails userDetails = user.getUserDetails();
-            if (userDetails==null){
-                userDetails = new UserDetails();
+        if (userRequestDTO.getUserDetailsRequestDTO() != null) {
+            UserDetail userDetail = user.getUserDetail();
+            if (userDetail == null) {
+                userDetail = new UserDetail();
             }
-           userDetails =  toUserDetails(userRequestDTO.getUserDetailsRequestDTO());
-            user.setUserDetails(userDetails);
+            userDetail = toUserDetails(userRequestDTO.getUserDetailsRequestDTO());
+            user.setUserDetail(userDetail);
         }
-        if (userRequestDTO.getUserShiftRequestDTO()!=null){
+        if (userRequestDTO.getUserShiftRequestDTO() != null) {
             UserShift userShift = user.getUserShift();
-            if (userShift==null){
+            if (userShift == null) {
                 userShift = new UserShift();
             }
             userShift = toUserShift(userRequestDTO.getUserShiftRequestDTO());
             user.setUserShift(userShift);
         }
-        if (userRequestDTO.getRoleId()!=null){
+        if (userRequestDTO.getRoleId() != null) {
             user.setRole(this.roleService.getRoleById(userRequestDTO.getRoleId()));
         }
         return user;

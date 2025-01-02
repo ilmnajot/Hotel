@@ -11,6 +11,7 @@ public class UserRequestDTO {
     private String fName;
     private String lName;
     private String email;
+    private String password;
     private String phone;
     private UserDetailsRequestDTO userDetailsRequestDTO;
     private UserShiftRequestDTO userShiftRequestDTO;

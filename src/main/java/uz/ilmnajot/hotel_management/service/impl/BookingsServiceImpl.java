@@ -1,4 +1,4 @@
-package uz.ilmnajot.hotel_management.service;
+package uz.ilmnajot.hotel_management.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,10 +13,13 @@ import uz.ilmnajot.hotel_management.mapper.BookingsMapper;
 import uz.ilmnajot.hotel_management.repository.BookingsRepository;
 import uz.ilmnajot.hotel_management.repository.RoomRepository;
 import uz.ilmnajot.hotel_management.repository.UserRepository;
+import uz.ilmnajot.hotel_management.service.BookingsService;
+import uz.ilmnajot.hotel_management.service.RoomService;
+import uz.ilmnajot.hotel_management.service.UserService;
 import uz.ilmnajot.hotel_management.utils.SuccessMessage;
 
 import java.time.LocalDate;
-import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class BookingsServiceImpl implements BookingsService {

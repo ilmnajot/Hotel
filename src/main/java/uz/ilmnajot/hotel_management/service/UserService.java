@@ -7,6 +7,7 @@ import uz.ilmnajot.hotel_management.entity.User;
 public interface UserService {
 
     User getUserById(Long userId);
+    User getUserByEmail(String username);
 
     ApiResponse addEmployee(UserRequestDTO userRequestDTO);
 

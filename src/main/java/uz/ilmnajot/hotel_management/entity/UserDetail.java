@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Entity
 @Builder
-public class UserDetails extends AbsEntity {
+public class UserDetail extends AbsEntity {
 
     @OneToOne
     @JoinColumn(unique = true, nullable = false)

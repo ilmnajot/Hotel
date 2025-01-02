@@ -1,5 +1,6 @@
 package uz.ilmnajot.hotel_management.exception;
 
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
@@ -8,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
-
+@RequiredArgsConstructor
 @ControllerAdvice
 public class GlobalExceptionHandlerController {
 

@@ -1,7 +1,7 @@
 package uz.ilmnajot.hotel_management.service;
 
-import uz.ilmnajot.hotel_management.entity.UserDetails;
+import uz.ilmnajot.hotel_management.entity.UserDetail;
 
 public interface UserDetailsService {
-    UserDetails getUserDetails(Long id);
+    UserDetail getUserDetails(Long id);
 }

@@ -1,4 +1,4 @@
-package uz.ilmnajot.hotel_management.service;
+package uz.ilmnajot.hotel_management.service.impl;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -11,6 +11,7 @@ import uz.ilmnajot.hotel_management.exception.AlreadyExistsException;
 import uz.ilmnajot.hotel_management.exception.ResourceNotFoundException;
 import uz.ilmnajot.hotel_management.mapper.RoomMapper;
 import uz.ilmnajot.hotel_management.repository.RoomRepository;
+import uz.ilmnajot.hotel_management.service.RoomService;
 import uz.ilmnajot.hotel_management.utils.ErrorMessage;
 import uz.ilmnajot.hotel_management.utils.SuccessMessage;
 
