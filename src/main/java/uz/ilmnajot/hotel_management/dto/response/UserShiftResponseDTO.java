@@ -11,11 +11,10 @@ import java.time.LocalTime;
 public class UserShiftResponseDTO {
 
     private Long id;
-    private String name;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private Long userId;
     private LocalTime startTime;
     private LocalTime endTime;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private String description;
-    private Long userId;
 }

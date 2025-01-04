@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import uz.ilmnajot.hotel_management.dto.request.UserDetailsRequestDTO;
 import uz.ilmnajot.hotel_management.dto.request.UserRequestDTO;
 import uz.ilmnajot.hotel_management.dto.request.UserShiftRequestDTO;
+import uz.ilmnajot.hotel_management.dto.response.GuestResponseDTO;
 import uz.ilmnajot.hotel_management.dto.response.UserDetailsResponseDTO;
 import uz.ilmnajot.hotel_management.dto.response.UserResponseDTO;
 import uz.ilmnajot.hotel_management.dto.response.UserShiftResponseDTO;
@@ -30,10 +31,8 @@ public class UserMapperImpl implements UserMapper {
             throw new AlreadyExistsException("User details must not be null");
         }
         UserDetail details = new UserDetail();
-        User user = this.userService.getUserById(userDetailsRequestDTO.getUserId());
-        details.setUser(user);
         details.setDetailsStatus(userDetailsRequestDTO.getDetailsStatus());
-        details.setPassportNumber(userDetailsRequestDTO.getPassportNumber());
+        details.setDocumentNo(userDetailsRequestDTO.getPassportNumber());
         details.setExpirationDate(userDetailsRequestDTO.getExpirationDate());
         details.setDetails(userDetailsRequestDTO.getDetails());
         return details;
@@ -43,36 +42,32 @@ public class UserMapperImpl implements UserMapper {
         UserDetailsResponseDTO responseDTO = new UserDetailsResponseDTO();
         responseDTO.setId(userDetail.getId());
         responseDTO.setDetailsStatus(userDetail.getDetailsStatus());
-        responseDTO.setPassportNumber(userDetail.getPassportNumber());
+        responseDTO.setPassportNumber(userDetail.getDocumentNo());
         responseDTO.setExpirationDate(userDetail.getExpirationDate());
         responseDTO.setDetails(userDetail.getDetails());
-        responseDTO.setUserId(userDetail.getUser().getId());
         return responseDTO;
     }
 
-    public UserShift toUserShift(UserShiftRequestDTO userShiftRequestDTO) {
+    public UserShift toUserShift(User user, UserShiftRequestDTO userShiftRequestDTO) {
         UserShift shift = new UserShift();
-        shift.setName(userShiftRequestDTO.getName());
-        shift.setStartDate(userShiftRequestDTO.getStartDate());
-        shift.setEndDate(userShiftRequestDTO.getEndDate());
+        shift.setUser(user);
         shift.setStartTime(userShiftRequestDTO.getStartTime());
         shift.setEndTime(userShiftRequestDTO.getEndTime());
+        shift.setStartDate(userShiftRequestDTO.getStartDate());
+        shift.setEndDate(userShiftRequestDTO.getEndDate());
         shift.setDescription(userShiftRequestDTO.getDescription());
-        User user = this.userService.getUserById(userShiftRequestDTO.getUserId());
-        shift.setUser(user);
         return shift;
     }
 
-    public UserShiftResponseDTO toUserShiftResponseDTO(UserShift userShift) {
+    public UserShiftResponseDTO toUserShiftResponseDTO(User user, UserShift userShift) {
         UserShiftResponseDTO responseDTO = new UserShiftResponseDTO();
         responseDTO.setId(userShift.getId());
-        responseDTO.setName(userShift.getName());
-        responseDTO.setStartDate(userShift.getStartDate());
-        responseDTO.setEndDate(userShift.getEndDate());
+        responseDTO.setUserId(user.getId());
         responseDTO.setStartTime(userShift.getStartTime());
         responseDTO.setEndTime(userShift.getEndTime());
+        responseDTO.setStartDate(userShift.getStartDate());
+        responseDTO.setEndDate(userShift.getEndDate());
         responseDTO.setDescription(userShift.getDescription());
-        responseDTO.setUserId(userShift.getUser().getId());
         return responseDTO;
     }
 
@@ -83,8 +78,7 @@ public class UserMapperImpl implements UserMapper {
         user.setEmail(userRequestDTO.getEmail());
         user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
         user.setPhone(userRequestDTO.getPhone());
-        user.setUserDetail(toUserDetails(userRequestDTO.getUserDetailsRequestDTO()));
-        user.setUserShift(toUserShift(userRequestDTO.getUserShiftRequestDTO()));
+        user.setUserDetail(this.toUserDetails(userRequestDTO.getUserDetailsRequestDTO()));
         user.setRole(this.roleService.getRoleById(userRequestDTO.getRoleId()));
         return user;
 
@@ -100,7 +94,21 @@ public class UserMapperImpl implements UserMapper {
         responseDTO.setPassword(user.getPassword());
         responseDTO.setPhone(user.getPhone());
         responseDTO.setUserDetailsId(user.getUserDetail().getId());
-        responseDTO.setUserShiftId(user.getUserShift().getId());
+        responseDTO.setRoleId(user.getRole().getId());
+        return responseDTO;
+    }
+
+
+    @Override
+    public GuestResponseDTO toGuestResponseDTO(User user) {
+        GuestResponseDTO responseDTO = new GuestResponseDTO();
+        responseDTO.setId(user.getId());
+        responseDTO.setFName(user.getFName());
+        responseDTO.setLName(user.getLName());
+        responseDTO.setEmail(user.getEmail());
+        responseDTO.setPassword(user.getPassword());
+        responseDTO.setPhone(user.getPhone());
+        responseDTO.setUserDetailsId(user.getUserDetail().getId());
         responseDTO.setRoleId(user.getRole().getId());
         return responseDTO;
     }
@@ -127,14 +135,14 @@ public class UserMapperImpl implements UserMapper {
             userDetail = toUserDetails(userRequestDTO.getUserDetailsRequestDTO());
             user.setUserDetail(userDetail);
         }
-        if (userRequestDTO.getUserShiftRequestDTO() != null) {
-            UserShift userShift = user.getUserShift();
-            if (userShift == null) {
-                userShift = new UserShift();
-            }
-            userShift = toUserShift(userRequestDTO.getUserShiftRequestDTO());
-            user.setUserShift(userShift);
-        }
+//        if (userRequestDTO.getUserShiftRequestDTO() != null) {
+//            UserShift userShift = user.getUserShift();
+//            if (userShift == null) {
+//                userShift = new UserShift();
+//            }
+//            userShift = toUserShift(userRequestDTO.getUserShiftRequestDTO());
+//            user.setUserShift(userShift);
+//        }
         if (userRequestDTO.getRoleId() != null) {
             user.setRole(this.roleService.getRoleById(userRequestDTO.getRoleId()));
         }

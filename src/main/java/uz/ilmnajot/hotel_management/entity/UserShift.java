@@ -1,8 +1,6 @@
 package uz.ilmnajot.hotel_management.entity;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.*;
 import uz.ilmnajot.hotel_management.template.AbsEntity;
 
@@ -17,14 +15,14 @@ import java.time.LocalTime;
 @Builder
 public class UserShift extends AbsEntity {
 
-    private String name;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    @ManyToOne
+    @JoinColumn(name = "user_id",nullable = false)
+    private User user;
     private LocalTime startTime;
     private LocalTime endTime;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private String description;
-    @OneToOne
-    private User user;
 
 
 }

@@ -29,7 +29,7 @@ public class UserController {
         return ResponseEntity.ok(apiResponse);
     }
 
-    @GetMapping
+    @GetMapping("/get-all-employees")
     public HttpEntity<ApiResponse> getAllEmployees() {
         ApiResponse apiResponse = userService.getAllEmployees();
         return ResponseEntity.ok(apiResponse);
@@ -45,6 +45,11 @@ public class UserController {
     @DeleteMapping("/delete-employee/{employeeId}")
     public HttpEntity<ApiResponse> deleteEmployee(@PathVariable Long employeeId) {
         ApiResponse apiResponse = userService.deleteEmployee(employeeId);
+        return ResponseEntity.ok(apiResponse);
+    }
+    @GetMapping("/getHistory")
+    public HttpEntity<ApiResponse> getHistory(@RequestParam Long guestId) {
+        ApiResponse apiResponse = userService.getHistory(guestId);
         return ResponseEntity.ok(apiResponse);
     }
 }

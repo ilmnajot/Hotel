@@ -1,7 +1,10 @@
 package uz.ilmnajot.hotel_management.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import uz.ilmnajot.hotel_management.dto.common.ApiResponse;
+import uz.ilmnajot.hotel_management.dto.request.PaymentRequestDTO;
 import uz.ilmnajot.hotel_management.service.PaymentService;
 
 @RestController
@@ -12,5 +15,11 @@ public class PaymentController {
 
     public PaymentController(PaymentService paymentService) {
         this.paymentService = paymentService;
+    }
+
+    @PostMapping("/make-payment")
+    public HttpEntity<ApiResponse> makePayment(@RequestBody PaymentRequestDTO paymentRequestDTO) {
+        ApiResponse apiResponse = paymentService.makePayment(paymentRequestDTO);
+        return ResponseEntity.ok(apiResponse);
     }
 }

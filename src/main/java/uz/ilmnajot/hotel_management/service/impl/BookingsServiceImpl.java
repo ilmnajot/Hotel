@@ -9,6 +9,7 @@ import uz.ilmnajot.hotel_management.entity.Room;
 import uz.ilmnajot.hotel_management.entity.User;
 import uz.ilmnajot.hotel_management.enums.BookingStatus;
 import uz.ilmnajot.hotel_management.enums.Status;
+import uz.ilmnajot.hotel_management.exception.ResourceNotFoundException;
 import uz.ilmnajot.hotel_management.mapper.BookingsMapper;
 import uz.ilmnajot.hotel_management.repository.BookingsRepository;
 import uz.ilmnajot.hotel_management.repository.RoomRepository;
@@ -36,14 +37,14 @@ public class BookingsServiceImpl implements BookingsService {
     public ApiResponse bookRoom(Long roomId, Long userId) {
         User user = userService.getUserById(userId);
         Room room = roomService.findByRoomId(roomId);
-        if (room.getStatus() == Status.BOOKED) {
-            return new ApiResponse("failed", false, HttpStatus.BAD_REQUEST, "Book has been booked already");
+        if (room.getStatus() == Status.BOOKED || room.getStatus()==Status.IN_PROCESS || room.getStatus()==Status.UNDER_MAINTENANCE) {
+            return new ApiResponse("Failed", false, HttpStatus.BAD_REQUEST, "The book has been failed for some reason!");
         }
 
         Bookings bookings = new Bookings();
         bookings.setCheckInDate(LocalDate.now());
         bookings.setCheckOutDate(LocalDate.now().plusDays(1));
-        bookings.setBookingStatus(BookingStatus.CONFIRMED);
+        bookings.setBookingStatus(BookingStatus.PAID);
         bookings.setUser(user);
         bookings.setRoom(room);
 
@@ -52,5 +53,11 @@ public class BookingsServiceImpl implements BookingsService {
         room.setStatus(Status.BOOKED);
         roomRepository.save(room);
         return new ApiResponse(SuccessMessage.SUCCESS, true, HttpStatus.OK, "Room has been booked successfully");
+    }
+
+    @Override
+    public Bookings getBookingsById(Long bookingsId) {
+        return bookingsRepository.findById(bookingsId).orElseThrow(
+                () -> new ResourceNotFoundException("Bookings not found"));
     }
 }

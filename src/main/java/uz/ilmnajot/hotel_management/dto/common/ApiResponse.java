@@ -21,4 +21,9 @@ public class ApiResponse {
     }
 
 
+    public ApiResponse(String message, boolean success, HttpStatus httpStatus) {
+        this.message = message;
+        this.success = success;
+        this.status = httpStatus;
+    }
 }

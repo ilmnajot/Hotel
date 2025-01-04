@@ -18,4 +18,6 @@ public interface UserService {
     ApiResponse updateEmployee(Long employeeId, UserRequestDTO userRequestDTO);
 
     ApiResponse deleteEmployee(Long employeeId);
+
+    ApiResponse getHistory(Long guestId);
 }

@@ -8,6 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import uz.ilmnajot.hotel_management.template.AbsEntity;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -28,11 +29,12 @@ public class User extends AbsEntity  implements UserDetails { //this class can s
     private String phone;
     private String emailCode;
 
-    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
+    @OneToOne(optional = false)
+    @JoinColumn(unique = true, nullable = false, name = "user_detail_id")
     private UserDetail userDetail;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private UserShift userShift;
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<UserShift> userShifts = new ArrayList<>();
 
     @ManyToOne
     private Role role;

@@ -13,6 +13,8 @@ import uz.ilmnajot.hotel_management.enums.RoleType;
 import uz.ilmnajot.hotel_management.repository.RoleRepository;
 import uz.ilmnajot.hotel_management.repository.UserRepository;
 
+import java.util.List;
+
 @Component
 public class DataLoader implements CommandLineRunner {
 
@@ -22,9 +24,9 @@ public class DataLoader implements CommandLineRunner {
     @Value("${spring.sql.init.mode}")
     private String initMode;
     private static final String ALWAYS = "always";
-    private static final String ADMIN = "ADMIN";
-    private static final String MANAGER = "MANAGER";
-    private static final String USER = "USER";
+    private static final String ADMIN_PHONE = "+9989999999";
+    private static final String OWNER_PHONE = "+9989999999";
+    private static final String USER_PHONE = "+9989999999";
 
     public DataLoader(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.roleRepository = roleRepository;
@@ -35,7 +37,28 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if (initMode.equals(ALWAYS)){
+        if (initMode.equals(ALWAYS)) {
+
+
+            UserDetail userDetails = UserDetail
+                    .builder()
+//                    .user(owner)
+                    .detailsStatus(DetailsStatus.PASSPORT)
+                    .passportNumber("aa7456885")
+                    .expirationDate(null)
+                    .details("nothing")
+                    .build();
+
+            UserShift userShi = UserShift
+                    .builder()
+                    .name("schedule")
+                    .startDate(null)
+                    .description("description")
+//                    .user(owner)
+                    .build();
+
+
+
             Role ownerRole = Role
                     .builder()
                     .name(RoleType.OWNER.name())
@@ -63,7 +86,7 @@ public class DataLoader implements CommandLineRunner {
                     .lName("owner")
                     .email("owner@gmail.com")
                     .password(passwordEncoder.encode("owner"))
-                    .phone("+998994107354")
+                    .phone(OWNER_PHONE)
                     .role(ownerRole)
                     .enabled(true)
                     .build();
@@ -75,7 +98,7 @@ public class DataLoader implements CommandLineRunner {
                     .lName("admin")
                     .email("admin@gmail.com")
                     .password(passwordEncoder.encode("admin"))
-                    .phone("+998994107354")
+                    .phone(ADMIN_PHONE)
                     .role(adminRole)
                     .enabled(true)
                     .build();
@@ -87,30 +110,17 @@ public class DataLoader implements CommandLineRunner {
                     .lName("user")
                     .email("user@gmail.com")
                     .password(passwordEncoder.encode("user"))
-                    .phone("+998994107354")
+                    .phone(USER_PHONE)
                     .role(userRole)
                     .enabled(true)
+                    .userDetail(userDetails)
+                    .userShifts(List.of(userShi))
                     .build();
             userRepository.save(user);
 
 
-            UserDetail
-                    .builder()
-                    .user(owner)
-                    .detailsStatus(DetailsStatus.PASSPORT)
-                    .passportNumber("aa7456885")
-                    .expirationDate(null)
-                    .details("nothing")
-                    .build();
 
-            UserShift
-                    .builder()
-                    .name("schedule")
-                    .startDate(null)
-                    .description("description")
-                    .user(owner)
-                    .build();
-
-        }
     }
 }
+}
+

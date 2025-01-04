@@ -1,6 +1,8 @@
 package uz.ilmnajot.hotel_management.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import uz.ilmnajot.hotel_management.enums.DetailsStatus;
 import uz.ilmnajot.hotel_management.template.AbsEntity;
@@ -15,16 +17,10 @@ import java.time.LocalDate;
 @Builder
 public class UserDetail extends AbsEntity {
 
-    @OneToOne
-    @JoinColumn(unique = true, nullable = false)
-    private User user;
-
     @Enumerated(EnumType.STRING)
     private DetailsStatus detailsStatus;
-
-    private String passportNumber;
-
+    private String documentNo;
     private LocalDate expirationDate;
-
+    @Size(max = 200)
     private String details;
 }

@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import uz.ilmnajot.hotel_management.dto.request.UserRequestDTO;
 import uz.ilmnajot.hotel_management.dto.common.ApiResponse;
+import uz.ilmnajot.hotel_management.dto.response.GuestResponseDTO;
 import uz.ilmnajot.hotel_management.dto.response.UserResponseDTO;
 import uz.ilmnajot.hotel_management.entity.User;
 import uz.ilmnajot.hotel_management.exception.ResourceNotFoundException;
@@ -52,7 +53,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public ApiResponse getAllEmployees() {
         List<User> userList = userRepository.findAll();
-        List<UserResponseDTO> responseDTOList = userList.stream().map(userMapper::toUserResponseDTO).toList();
+        List<UserResponseDTO> responseDTOList = userList
+                .stream()
+                .map(userMapper::toUserResponseDTO)
+                .toList();
         return new ApiResponse(SuccessMessage.SUCCESS, true, HttpStatus.OK, responseDTOList);
     }
 
@@ -68,6 +72,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public ApiResponse deleteEmployee(Long employeeId) {
         return null;
+    }
+
+    @Override
+    public ApiResponse getHistory(Long guestId) {
+        User user = userRepository.findById(guestId).orElseThrow(() -> new ResourceNotFoundException(ErrorMessage.USER_NOT_FOUND));
+        GuestResponseDTO userResponseDTO = userMapper.toGuestResponseDTO(user);
+        return new ApiResponse(SuccessMessage.SUCCESS, true, HttpStatus.OK, userResponseDTO);
     }
 
     public User getUserById(Long userId) {

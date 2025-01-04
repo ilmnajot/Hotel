@@ -2,6 +2,7 @@ package uz.ilmnajot.hotel_management.utils;
 
 public class ErrorMessage {
     public static final String USER_NOT_FOUND = "User Not Found";
+    public static final String USER_SHIFT_NOT_FOUND = "User Shift Not Found";
     public static final String USER_ALREADY_EXISTS = "User Already Exists";
     public static final String USER_ALREADY_DELETED = "User Already Deleted";
     public static final String USER_ALREADY_UPDATED = "User Already Updated";
