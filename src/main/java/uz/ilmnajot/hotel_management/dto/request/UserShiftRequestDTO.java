@@ -12,7 +12,6 @@ import java.time.LocalTime;
 @Getter
 public class UserShiftRequestDTO {
 
-    private Long userId;
     private LocalTime startTime;
     private LocalTime endTime;
     private LocalDate startDate;

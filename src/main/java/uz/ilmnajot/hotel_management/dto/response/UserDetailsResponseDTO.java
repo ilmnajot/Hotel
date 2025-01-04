@@ -15,5 +15,4 @@ public class UserDetailsResponseDTO {
     private String passportNumber;
     private LocalDate expirationDate;
     private String details;
-    private Long userId;
 }

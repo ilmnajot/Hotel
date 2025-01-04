@@ -3,6 +3,7 @@ package uz.ilmnajot.hotel_management.service.impl;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import uz.ilmnajot.hotel_management.dto.request.UserRequestDTO;
 import uz.ilmnajot.hotel_management.dto.common.ApiResponse;
 import uz.ilmnajot.hotel_management.dto.response.GuestResponseDTO;
@@ -30,7 +31,7 @@ public class UserServiceImpl implements UserService {
         this.userMapper = userMapper;
     }
 
-
+    @Transactional
     @Override
     public ApiResponse addEmployee(UserRequestDTO userRequestDTO) {
         Optional<User> optionalUser = userRepository.findByEmailAndDeletedFalse(userRequestDTO.getEmail());

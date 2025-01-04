@@ -40,22 +40,26 @@ public class DataLoader implements CommandLineRunner {
         if (initMode.equals(ALWAYS)) {
 
 
-            UserDetail userDetails = UserDetail
+            UserDetail userDetail = UserDetail
                     .builder()
-//                    .user(owner)
                     .detailsStatus(DetailsStatus.PASSPORT)
-                    .documentNo("aa7456885")
-                    .expirationDate(null)
-                    .details("nothing")
+                    .documentNo("user7456885")
+                    .details("user")
                     .build();
 
-            UserShift userShi = UserShift
+            UserDetail adminDetail = UserDetail
                     .builder()
-                    .startDate(null)
-                    .description("description")
-//                    .user(owner)
+                    .detailsStatus(DetailsStatus.PASSPORT)
+                    .documentNo("admin7456885")
+                    .details("admin details")
                     .build();
 
+            UserDetail ownerDetail = UserDetail
+                    .builder()
+                    .detailsStatus(DetailsStatus.PASSPORT)
+                    .documentNo("owner7456885")
+                    .details("owner details")
+                    .build();
 
 
             Role ownerRole = Role
@@ -87,6 +91,7 @@ public class DataLoader implements CommandLineRunner {
                     .password(passwordEncoder.encode("owner"))
                     .phone(OWNER_PHONE)
                     .role(ownerRole)
+                    .userDetail(ownerDetail)
                     .enabled(true)
                     .build();
             userRepository.save(owner);
@@ -99,6 +104,7 @@ public class DataLoader implements CommandLineRunner {
                     .password(passwordEncoder.encode("admin"))
                     .phone(ADMIN_PHONE)
                     .role(adminRole)
+                    .userDetail(adminDetail)
                     .enabled(true)
                     .build();
             userRepository.save(admin);
@@ -112,14 +118,12 @@ public class DataLoader implements CommandLineRunner {
                     .phone(USER_PHONE)
                     .role(userRole)
                     .enabled(true)
-                    .userDetail(userDetails)
-                    .userShifts(List.of(userShi))
+                    .userDetail(userDetail)
                     .build();
             userRepository.save(user);
 
 
-
+        }
     }
-}
 }
 

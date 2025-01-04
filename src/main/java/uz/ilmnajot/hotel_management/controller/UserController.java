@@ -2,6 +2,7 @@ package uz.ilmnajot.hotel_management.controller;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.ilmnajot.hotel_management.dto.request.UserRequestDTO;
 import uz.ilmnajot.hotel_management.dto.common.ApiResponse;
@@ -17,6 +18,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OWNER')")
     @PostMapping("/add-employee")
     public HttpEntity<ApiResponse> addEmployee(@RequestBody UserRequestDTO userRequestDTO) {
         ApiResponse apiResponse = userService.addEmployee(userRequestDTO);

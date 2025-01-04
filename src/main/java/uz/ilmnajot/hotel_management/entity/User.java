@@ -29,11 +29,11 @@ public class User extends AbsEntity  implements UserDetails { //this class can s
     private String phone;
     private String emailCode;
 
-    @OneToOne(optional = false)
+    @OneToOne(optional = false, cascade = CascadeType.PERSIST)
     @JoinColumn(unique = true, nullable = false, name = "user_detail_id")
     private UserDetail userDetail;
 
-    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<UserShift> userShifts = new ArrayList<>();
 
     @ManyToOne

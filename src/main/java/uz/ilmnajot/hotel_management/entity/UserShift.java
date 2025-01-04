@@ -1,5 +1,6 @@
 package uz.ilmnajot.hotel_management.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 import uz.ilmnajot.hotel_management.template.AbsEntity;
@@ -18,7 +19,9 @@ public class UserShift extends AbsEntity {
     @ManyToOne
     @JoinColumn(name = "user_id",nullable = false)
     private User user;
+    @Schema(type = "String", pattern = "HH:mm")
     private LocalTime startTime;
+    @Schema(type = "String", pattern = "HH:mm")
     private LocalTime endTime;
     private LocalDate startDate;
     private LocalDate endDate;

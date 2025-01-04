@@ -5,6 +5,8 @@ import lombok.Setter;
 import uz.ilmnajot.hotel_management.dto.request.UserDetailsRequestDTO;
 import uz.ilmnajot.hotel_management.dto.request.UserShiftRequestDTO;
 
+import java.util.List;
+
 @Setter
 @Getter
 public class UserResponseDTO {
@@ -13,9 +15,8 @@ public class UserResponseDTO {
     private String fName;
     private String lName;
     private String email;
-    private String password;
     private String phone;
     private Long userDetailsId;
-    private Long userShiftId;
+    private List<Long> userShiftIds;
     private Long roleId;
 }

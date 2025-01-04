@@ -14,8 +14,11 @@ import uz.ilmnajot.hotel_management.entity.User;
 import uz.ilmnajot.hotel_management.entity.UserDetail;
 import uz.ilmnajot.hotel_management.entity.UserShift;
 import uz.ilmnajot.hotel_management.exception.AlreadyExistsException;
+import uz.ilmnajot.hotel_management.repository.UserDetailsRepository;
 import uz.ilmnajot.hotel_management.service.RoleService;
 import uz.ilmnajot.hotel_management.service.UserService;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -24,6 +27,7 @@ public class UserMapperImpl implements UserMapper {
     private final UserService userService;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
+    private final UserDetailsRepository userDetailsRepository;
 
 
     public UserDetail toUserDetails(UserDetailsRequestDTO userDetailsRequestDTO) {
@@ -35,6 +39,7 @@ public class UserMapperImpl implements UserMapper {
         details.setDocumentNo(userDetailsRequestDTO.getPassportNumber());
         details.setExpirationDate(userDetailsRequestDTO.getExpirationDate());
         details.setDetails(userDetailsRequestDTO.getDetails());
+        userDetailsRepository.save(details);
         return details;
     }
 
@@ -91,9 +96,12 @@ public class UserMapperImpl implements UserMapper {
         responseDTO.setFName(user.getFName());
         responseDTO.setLName(user.getLName());
         responseDTO.setEmail(user.getEmail());
-        responseDTO.setPassword(user.getPassword());
         responseDTO.setPhone(user.getPhone());
         responseDTO.setUserDetailsId(user.getUserDetail().getId());
+        responseDTO.setUserShiftIds(user.getUserShifts()
+                .stream()
+                .map(UserShift::getId)
+                .toList());
         responseDTO.setRoleId(user.getRole().getId());
         return responseDTO;
     }

@@ -21,6 +21,5 @@ public class UserDetail extends AbsEntity {
     private DetailsStatus detailsStatus;
     private String documentNo;
     private LocalDate expirationDate;
-    @Size(max = 200)
     private String details;
 }
