@@ -44,14 +44,13 @@ public class DataLoader implements CommandLineRunner {
                     .builder()
 //                    .user(owner)
                     .detailsStatus(DetailsStatus.PASSPORT)
-                    .passportNumber("aa7456885")
+                    .documentNo("aa7456885")
                     .expirationDate(null)
                     .details("nothing")
                     .build();
 
             UserShift userShi = UserShift
                     .builder()
-                    .name("schedule")
                     .startDate(null)
                     .description("description")
 //                    .user(owner)
